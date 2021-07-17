@@ -1,11 +1,9 @@
 import React, { useEffect, useState } from "react";
-import {useHistory} from 'react-router-dom'
 
 import Form1 from "./Form1";
 import Form2 from "./Form2";
 
-function AddListing() {
-    const history=useHistory()
+function AddListing(props) {
   const [form, setForm] = useState("");
 
   const changeForm = (form) => {
@@ -20,7 +18,7 @@ function AddListing() {
           <Form2
             changeForm={changeForm}
             close={() => {
-              history.push('/listing')
+              props.close();
             }}
           />
         );

@@ -27,9 +27,15 @@ function Listing() {
               marginBottom: "10px",
             }}
           >
-            <h5 style={{ flex: "1" }}>{i + 1}.</h5>
-            <h5 style={{ flex: "7" }}>{item.title}</h5>
-            <p style={{ flex: "5" }}>{item.startDate}</p>
+            <p style={{ flex: "1", fontWeight: "600", fontSize: "1.1rem" }}>
+              {i + 1}.
+            </p>
+            <p style={{ flex: "7", fontWeight: "600", fontSize: "1.1rem" }}>
+              {item.title}
+            </p>
+            <p style={{ flex: "5", fontWeight: "600", fontSize: "1.1rem" }}>
+              {item.startDate}
+            </p>
             <p
               style={{ flex: "4", cursor: "pointer" }}
               onClick={() => {
@@ -123,7 +129,7 @@ function Listing() {
           width: "100%",
         }}
       >
-        <div>
+        <div style={{ marginTop: "-80px" }}>
           <p
             style={{
               color: "var(--primary-color)",
@@ -133,23 +139,26 @@ function Listing() {
             }}
             onClick={() => {
               setModalOpen(true);
-              setModalBody(<AddListing />);
+              setModalBody(<AddListing close={() => setModalOpen(false)} />);
             }}
           >
-            +Add Listing
+            +Add Another Job
           </p>
-          <div
-            className="custom-scroll"
+          <Paper
+            elevation={0}
+            className="custom-scroll listing"
             style={{
+              padding: "10px",
               minWidth: "330px",
-              maxHeight: "70vh",
+              width: "630px",
+              maxHeight: "300px",
               minHeight: "200px",
               overflowY: "scroll",
               maxWidth: "600px",
             }}
           >
             {errorMsg ? <p>{errorMsg}</p> : listings}
-          </div>
+          </Paper>
         </div>
       </section>
     </div>

@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { useHistory } from "react-router-dom";
 import { Modal, Paper } from "@material-ui/core";
 
 import Navbar from "./Navbar";
@@ -6,6 +7,7 @@ import AddListing from "./AddListing";
 import "./Main.css";
 
 function Main(props) {
+  const history = useHistory();
   const [modalOpen, setModalOpen] = useState(false);
 
   return (
@@ -34,7 +36,12 @@ function Main(props) {
           }}
         >
           <Paper elevation={2}>
-            <AddListing />
+            <AddListing
+              close={() => {
+                setModalOpen(false);
+                history.pushState("/listing");
+              }}
+            />
           </Paper>
         </div>
       </Modal>

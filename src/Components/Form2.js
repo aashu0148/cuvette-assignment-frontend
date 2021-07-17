@@ -15,8 +15,11 @@ function Form2(props) {
     startDate: props.data?.startDate || "",
   });
   const [errorMsg, setErrorMsg] = useState("");
+  const [buttonDisabled, setButtonDisabled] = useState(false);
 
   const submission = () => {
+    if (buttonDisabled) return;
+
     if (
       !(
         values.skills?.length > 0 &&
@@ -30,6 +33,7 @@ function Form2(props) {
       return;
     }
     setErrorMsg("");
+    setButtonDisabled(true);
 
     fetch(`${process.env.REACT_APP_SERVER}/listing/add`, {
       method: "POST",
@@ -45,6 +49,7 @@ function Form2(props) {
       }),
     })
       .then(async (res) => {
+        setButtonDisabled(false);
         const data = await res.json();
         if (!data.status) {
           setErrorMsg(data.message);
@@ -54,6 +59,7 @@ function Form2(props) {
         props.close();
       })
       .catch((err) => {
+        setButtonDisabled(false);
         setErrorMsg("Error connecting to server.");
       });
   };
@@ -109,39 +115,81 @@ function Form2(props) {
         >
           <p
             onClick={() => setMode("part")}
-            className="small"
+            // className="small"
             style={{
+              position: "relative",
               cursor: "pointer",
               margin: "0 6px",
+              fontSize: "14px",
               color: mode === "part" ? "var(--primary-color)" : "",
             }}
           >
+            <span
+              style={{
+                position: "absolute",
+                left: "-14px",
+                top: "50%",
+                transform: "translateY(-50%)",
+                height: "12px",
+                width: "12px",
+                border: "1px solid #eee",
+                background: mode === "part" ? "#0c1446" : "",
+              }}
+            />
             Part-time
             <br />
             20 hrs/week
           </p>
           <p
             onClick={() => setMode("semi-full")}
-            className="small"
+            // className="small"
             style={{
+              position: "relative",
               cursor: "pointer",
               margin: "0 6px",
+              fontSize: "14px",
               color: mode === "semi-full" ? "var(--primary-color)" : "",
             }}
           >
+            <span
+              style={{
+                position: "absolute",
+                left: "-14px",
+                top: "50%",
+                transform: "translateY(-50%)",
+                height: "12px",
+                width: "12px",
+                border: "1px solid #eee",
+                background: mode === "semi-full" ? "#0c1446" : "",
+              }}
+            />
             Semi Full-time
             <br />
             30 hrs/week
           </p>
           <p
             onClick={() => setMode("full")}
-            className="small"
+            // className="small"
             style={{
+              position: "relative",
               cursor: "pointer",
               margin: "0 6px",
+              fontSize: "14px",
               color: mode === "full" ? "var(--primary-color)" : "",
             }}
           >
+            <span
+              style={{
+                position: "absolute",
+                left: "-14px",
+                top: "50%",
+                transform: "translateY(-50%)",
+                height: "12px",
+                width: "12px",
+                border: "1px solid #eee",
+                background: mode === "full" ? "#0c1446" : "",
+              }}
+            />
             Full-time
             <br />
             40 hrs/week
@@ -152,7 +200,7 @@ function Form2(props) {
       <br />
       <div className="field-form-elem">
         <label>Stipend Range</label>
-        <div style={{ flex: "1", marginLeft: "3px" }}>
+        <div style={{ flex: "1", marginLeft: "6px" }}>
           <Slider
             value={props.data?.stipend || [30000, 120000]}
             onChange={(value) => {
@@ -164,31 +212,39 @@ function Form2(props) {
         </div>
       </div>
       <br />
-      <div className="field-form-elem">
-        <label>StartDate</label>
-        <input
-          type="text"
-          placeholder="dd/mm/yy"
-          defaultValue={props.data?.startDate || ""}
-          onBlur={(e) => {
-            const myValues = { ...values };
-            myValues.startDate = e.target.value;
-            setValues(myValues);
-          }}
-        />
-      </div>
-      <div className="field-form-elem">
-        <label>Duration</label>
-        <input
-          type="text"
-          placeholder="Months"
-          defaultValue={props.data?.duration || ""}
-          onBlur={(e) => {
-            const myValues = { ...values };
-            myValues.duration = e.target.value;
-            setValues(myValues);
-          }}
-        />
+      <div style={{ display: "flex" }}>
+        <div className="field-form-elem field-form-elem-no-width">
+          <label style={{ minWidth: "fit-content" }}>StartDate</label>
+          <input
+            className="input-box"
+            style={{ width: "150px" }}
+            type="text"
+            placeholder="dd/mm/yy"
+            defaultValue={props.data?.startDate || ""}
+            onBlur={(e) => {
+              const myValues = { ...values };
+              myValues.startDate = e.target.value;
+              setValues(myValues);
+            }}
+          />
+        </div>
+        <div className="field-form-elem field-form-elem-no-width">
+          <label style={{ minWidth: "fit-content", marginLeft: "5px" }}>
+            Duration
+          </label>
+          <input
+            style={{ width: "50px" }}
+            className="input-box"
+            type="text"
+            defaultValue={props.data?.duration || ""}
+            onBlur={(e) => {
+              const myValues = { ...values };
+              myValues.duration = e.target.value;
+              setValues(myValues);
+            }}
+          />
+          <p>Months</p>
+        </div>
       </div>
       <br />
       <div className="field-form-elem">
